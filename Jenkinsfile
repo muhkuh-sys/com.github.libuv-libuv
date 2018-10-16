@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurperClassic
 
 node {
-    def ARTIFACTS_PATH = 'build/repository/com/github/zeromq/libzmq/*'
+    def ARTIFACTS_PATH = 'build/repository/com/github/libuv/libuv/*'
     def strBuilds = env.JENKINS_SELECT_BUILDS
     def atBuilds = new JsonSlurperClassic().parseText(strBuilds)
 
@@ -23,7 +23,7 @@ node {
                         ]
                     ],
                     submoduleCfg: [],
-                    userRemoteConfigs: [[url: 'https://github.com/muhkuh-sys/com.github.zeromq-libzmq.git']]
+                    userRemoteConfigs: [[url: 'https://github.com/muhkuh-sys/com.github.libuv-libuv.git']]
                 ])
 
                 /* Build the project. */
