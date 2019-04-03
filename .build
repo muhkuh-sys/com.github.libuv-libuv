@@ -14,40 +14,20 @@ PRJ_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 
 if [ "$TARGET" == "linux" ]; then
-	# Check for all build dependencies.
-	declare -a -r astrDeb=(
-		"libudev-dev"
-	)
-	declare -a astrInstall=()
-	for strDeb in "${astrDeb[@]}"
-	do
-		DPKG_STATUS=`dpkg-query -W -f='${Status}' ${strDeb} || echo 'unknown'`
-		if [ "$DPKG_STATUS" != "install ok installed" ]; then
-			astrInstall+=("${strDeb}")
-		fi
-	done
-	if [ ${#astrInstall[@]} -gt 0 ]; then
-		sudo apt-get update --assume-yes
-		sudo apt-get install --assume-yes ${astrInstall[@]}
-	fi
-
+	CMAKE_CROSS_COMPILER=""
 	CMAKE_PLATFORM=""
-	TOOLS_PATH=${PATH}
 
 elif [ "$TARGET" == "windows32" ]; then
 	CMAKE_CROSS_COMPILER="-DCMAKE_TOOLCHAIN_FILE=${PRJ_DIR}/cmake/toolchainfiles/toolchain_windows_32.cmake"
 	CMAKE_PLATFORM="-DJONCHKI_PLATFORM_DIST_ID=windows -DJONCHKI_PLATFORM_DIST_VERSION="" -DJONCHKI_PLATFORM_CPU_ARCH=x86"
-	TOOLS_PATH=/usr/mingw-w64-i686/bin:${PATH}
 
 elif [ "$TARGET" == "windows64" ]; then
 	CMAKE_CROSS_COMPILER="-DCMAKE_TOOLCHAIN_FILE=${PRJ_DIR}/cmake/toolchainfiles/toolchain_windows_64.cmake"
 	CMAKE_PLATFORM="-DJONCHKI_PLATFORM_DIST_ID=windows -DJONCHKI_PLATFORM_DIST_VERSION="" -DJONCHKI_PLATFORM_CPU_ARCH=x86_64"
-	TOOLS_PATH=/usr/mingw-w64-x86_64/bin:${PATH}
 
 elif [ "$TARGET" == "raspberry" ]; then
 	CMAKE_CROSS_COMPILER="-DCMAKE_TOOLCHAIN_FILE=${PRJ_DIR}/cmake/toolchainfiles/toolchain_ubuntu_arm64.cmake"
 	CMAKE_PLATFORM="-DJONCHKI_PLATFORM_DIST_ID=ubuntu -DJONCHKI_PLATFORM_DIST_VERSION=18.04 -DJONCHKI_PLATFORM_CPU_ARCH=arm64"
-	TOOLS_PATH=${PATH}
 
 else
 	echo "Unknown build target: ${TARGET}"
@@ -60,6 +40,6 @@ mkdir -p ${BUILD_DIR}
 
 # Build openocd.
 pushd ${BUILD_DIR}
-PATH=${TOOLS_PATH} cmake -DCMAKE_INSTALL_PREFIX="" ${CMAKE_CROSS_COMPILER} ${CMAKE_PLATFORM} ${CMAKE_MODULES} ${PRJ_DIR}
-PATH=${TOOLS_PATH} make pack
+cmake -DCMAKE_INSTALL_PREFIX="" ${CMAKE_CROSS_COMPILER} ${CMAKE_PLATFORM} ${CMAKE_MODULES} ${PRJ_DIR}
+make pack
 popd

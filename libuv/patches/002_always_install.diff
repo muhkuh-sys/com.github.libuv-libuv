@@ -1,7 +1,7 @@
-diff -uNr libuv-1.23.2/CMakeLists.txt libuv-1.23.2_patched/CMakeLists.txt
---- libuv-1.23.2/CMakeLists.txt	2018-10-08 18:52:30.000000000 +0200
-+++ libuv-1.23.2_patched/CMakeLists.txt	2018-10-16 12:31:20.343955100 +0200
-@@ -358,23 +358,23 @@
+diff -uNr libuv-1.27.0/CMakeLists.txt libuv-1.27.0-patched/CMakeLists.txt
+--- libuv-1.27.0/CMakeLists.txt	2019-04-03 13:31:09.577269414 +0200
++++ libuv-1.27.0-patched/CMakeLists.txt	2019-04-03 13:32:35.487086516 +0200
+@@ -371,23 +371,23 @@
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
  endif()
  
@@ -32,14 +32,14 @@ diff -uNr libuv-1.23.2/CMakeLists.txt libuv-1.23.2_patched/CMakeLists.txt
  
 -  install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 -  install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})
--  install(FILES LICENSE ${CMAKE_CURRENT_BINARY_DIR}/libuv.pc
+-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libuv.pc
 -          DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 -  install(TARGETS uv LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 -  install(TARGETS uv_a ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 -endif()
 +  install(DIRECTORY include/ DESTINATION "include")
 +#  install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})
-+#  install(FILES LICENSE ${CMAKE_CURRENT_BINARY_DIR}/libuv.pc
++#  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libuv.pc
 +#          DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 +#  install(TARGETS uv LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 +  install(TARGETS uv_a ARCHIVE DESTINATION "lib")

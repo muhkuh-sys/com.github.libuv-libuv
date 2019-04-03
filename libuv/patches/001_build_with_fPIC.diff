@@ -1,0 +1,11 @@
+diff -uNr libuv-1.27.0/CMakeLists.txt libuv-1.27.0-patched/CMakeLists.txt
+--- libuv-1.27.0/CMakeLists.txt	2019-03-16 19:31:48.000000000 +0100
++++ libuv-1.27.0-patched/CMakeLists.txt	2019-04-03 13:22:57.898646501 +0200
+@@ -9,6 +9,7 @@
+   list(APPEND uv_cflags -fvisibility=hidden --std=gnu89)
+   list(APPEND uv_cflags -Wall -Wextra -Wstrict-prototypes)
+   list(APPEND uv_cflags -Wno-unused-parameter)
++  list(APPEND uv_cflags -fPIC)
+ endif()
+ 
+ set(uv_sources
