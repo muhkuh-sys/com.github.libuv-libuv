@@ -1,7 +1,7 @@
-diff -uNr libuv-1.27.0/CMakeLists.txt libuv-1.27.0-patched/CMakeLists.txt
---- libuv-1.27.0/CMakeLists.txt	2019-04-03 13:31:09.577269414 +0200
-+++ libuv-1.27.0-patched/CMakeLists.txt	2019-04-03 13:32:35.487086516 +0200
-@@ -371,23 +371,23 @@
+diff -uNr libuv-1.30.1/CMakeLists.txt libuv-1.30.1_patched/CMakeLists.txt
+--- libuv-1.30.1/CMakeLists.txt	2019-08-06 09:43:42.280006613 +0200
++++ libuv-1.30.1_patched/CMakeLists.txt	2019-08-06 09:47:12.337357763 +0200
+@@ -374,23 +374,23 @@
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
  endif()
  
