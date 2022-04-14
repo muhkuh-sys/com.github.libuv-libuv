@@ -1,46 +1,62 @@
-diff -uNr libuv-1.30.1/CMakeLists.txt libuv-1.30.1_patched/CMakeLists.txt
---- libuv-1.30.1/CMakeLists.txt	2019-08-06 09:43:42.280006613 +0200
-+++ libuv-1.30.1_patched/CMakeLists.txt	2019-08-06 09:47:12.337357763 +0200
-@@ -374,23 +374,23 @@
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+diff -uNr libuv-1.44.1/CMakeLists.txt libuv-1.44.1_patched/CMakeLists.txt
+--- libuv-1.44.1/CMakeLists.txt	2022-04-14 10:03:27.976001381 +0200
++++ libuv-1.44.1_patched/CMakeLists.txt	2022-04-14 10:03:56.092000426 +0200
+@@ -652,33 +652,33 @@
+   endif()
  endif()
  
--if(UNIX)
--  # Now for some gibbering horrors from beyond the stars...
--  include(GNUInstallDirs)
--  foreach(x ${uv_libraries})
--    set(LIBS "${LIBS} -l${x}")
--  endforeach(x)
--  file(STRINGS configure.ac configure_ac REGEX ^AC_INIT)
--  string(REGEX MATCH [0-9]+[.][0-9]+[.][0-9]+ PACKAGE_VERSION "${configure_ac}")
--  set(includedir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
--  set(libdir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
--  set(prefix ${CMAKE_INSTALL_PREFIX})
--  configure_file(libuv.pc.in ${CMAKE_CURRENT_BINARY_DIR}/libuv.pc @ONLY)
-+#if(UNIX)
-+#  # Now for some gibbering horrors from beyond the stars...
-+#  include(GNUInstallDirs)
-+#  foreach(x ${uv_libraries})
-+#    set(LIBS "${LIBS} -l${x}")
-+#  endforeach(x)
-+#  file(STRINGS configure.ac configure_ac REGEX ^AC_INIT)
-+#  string(REGEX MATCH [0-9]+[.][0-9]+[.][0-9]+ PACKAGE_VERSION "${configure_ac}")
-+#  set(includedir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
-+#  set(libdir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
-+#  set(prefix ${CMAKE_INSTALL_PREFIX})
-+#  configure_file(libuv.pc.in ${CMAKE_CURRENT_BINARY_DIR}/libuv.pc @ONLY)
+-# Now for some gibbering horrors from beyond the stars...
+-foreach(lib IN LISTS uv_libraries)
+-  list(APPEND LIBS "-l${lib}")
+-endforeach()
+-string(REPLACE ";" " " LIBS "${LIBS}")
+-# Consider setting project version via project() call?
+-file(STRINGS configure.ac configure_ac REGEX ^AC_INIT)
+-string(REGEX MATCH "([0-9]+)[.][0-9]+[.][0-9]+" PACKAGE_VERSION "${configure_ac}")
+-set(UV_VERSION_MAJOR "${CMAKE_MATCH_1}")
+-# The version in the filename is mirroring the behaviour of autotools.
+-set_target_properties(uv PROPERTIES
+-  VERSION ${UV_VERSION_MAJOR}.0.0
+-  SOVERSION ${UV_VERSION_MAJOR})
+-set(includedir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
+-set(libdir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+-set(prefix ${CMAKE_INSTALL_PREFIX})
+-configure_file(libuv.pc.in libuv.pc @ONLY)
+-configure_file(libuv-static.pc.in libuv-static.pc @ONLY)
++## Now for some gibbering horrors from beyond the stars...
++#foreach(lib IN LISTS uv_libraries)
++#  list(APPEND LIBS "-l${lib}")
++#endforeach()
++#string(REPLACE ";" " " LIBS "${LIBS}")
++## Consider setting project version via project() call?
++#file(STRINGS configure.ac configure_ac REGEX ^AC_INIT)
++#string(REGEX MATCH "([0-9]+)[.][0-9]+[.][0-9]+" PACKAGE_VERSION "${configure_ac}")
++#set(UV_VERSION_MAJOR "${CMAKE_MATCH_1}")
++## The version in the filename is mirroring the behaviour of autotools.
++#set_target_properties(uv PROPERTIES
++#  VERSION ${UV_VERSION_MAJOR}.0.0
++#  SOVERSION ${UV_VERSION_MAJOR})
++#set(includedir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR})
++#set(libdir ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
++#set(prefix ${CMAKE_INSTALL_PREFIX})
++#configure_file(libuv.pc.in libuv.pc @ONLY)
++#configure_file(libuv-static.pc.in libuv-static.pc @ONLY)
  
--  install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
--  install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})
--  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libuv.pc
--          DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
--  install(TARGETS uv LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
--  install(TARGETS uv_a ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
--endif()
-+  install(DIRECTORY include/ DESTINATION "include")
-+#  install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})
-+#  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libuv.pc
-+#          DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
-+#  install(TARGETS uv LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-+  install(TARGETS uv_a ARCHIVE DESTINATION "lib")
-+#endif()
+ install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+-install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})
+-install(FILES ${PROJECT_BINARY_DIR}/libuv.pc ${PROJECT_BINARY_DIR}/libuv-static.pc
+-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+-install(TARGETS uv EXPORT libuvConfig
+-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
++#install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR})
++#install(FILES ${PROJECT_BINARY_DIR}/libuv.pc ${PROJECT_BINARY_DIR}/libuv-static.pc
++#        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
++#install(TARGETS uv EXPORT libuvConfig
++#        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++#        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++#        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+ install(TARGETS uv_a EXPORT libuvConfig
+         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+ install(EXPORT libuvConfig DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/libuv)

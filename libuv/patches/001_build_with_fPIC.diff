@@ -1,11 +1,12 @@
-diff -uNr libuv-1.30.1/CMakeLists.txt libuv-1.30.1_patched/CMakeLists.txt
---- libuv-1.30.1/CMakeLists.txt	2019-07-02 16:55:03.000000000 +0200
-+++ libuv-1.30.1_patched/CMakeLists.txt	2019-08-06 09:43:12.443224127 +0200
-@@ -8,6 +8,7 @@
-   list(APPEND uv_cflags -fvisibility=hidden --std=gnu89)
-   list(APPEND uv_cflags -Wall -Wextra -Wstrict-prototypes)
-   list(APPEND uv_cflags -Wno-unused-parameter)
-+  list(APPEND uv_cflags -fPIC)
+diff -uNr libuv-1.44.1/CMakeLists.txt libuv-1.44.1_patched/CMakeLists.txt
+--- libuv-1.44.1/CMakeLists.txt	2022-03-09 18:54:54.000000000 +0100
++++ libuv-1.44.1_patched/CMakeLists.txt	2022-04-14 10:02:47.524002743 +0200
+@@ -51,6 +51,8 @@
+   set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=thread")
  endif()
  
- set(uv_sources
++set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
++
+ # Compiler check
+ string(CONCAT is-msvc $<OR:
+   $<C_COMPILER_ID:MSVC>,
