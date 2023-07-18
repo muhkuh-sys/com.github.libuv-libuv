@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 
-PROJECT("com.github.zeromq-libzmq")
+PROJECT("com.github.libuv-libuv")
 
 # Get the VCS version for the jonchki configuration.
 INCLUDE(cmake/version.cmake)
