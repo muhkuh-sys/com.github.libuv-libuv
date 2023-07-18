@@ -49,19 +49,11 @@ SET(CPACK_PACKAGE_FILE_NAME "libuv-${PROJECT_VERSION}-${JONCHKI_PLATFORM}")
 SET(CPACK_GENERATOR "TXZ")
 INCLUDE(CPack)
 
-IF(${JONCHKI_PLATFORM_DIST_ID} STREQUAL "windows")
-	# Package a windows build.
+# Package a linux build.
 
-	CONFIGURE_FILE(installer/install_windows.lua
-	               ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
-	               @ONLY)
-ELSE(${JONCHKI_PLATFORM_DIST_ID} STREQUAL "windows")
-	# Package a linux build.
-
-	CONFIGURE_FILE(installer/install_linux.lua
-	               ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
-	               @ONLY)
-ENDIF(${JONCHKI_PLATFORM_DIST_ID} STREQUAL "windows")
+CONFIGURE_FILE(installer/install_linux.lua
+               ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
+               @ONLY)
 
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
         DESTINATION .)
